@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traffic-svc
+  namespace: traffic
+spec:
+  ports:
+  - name: "http"
+    port: 80
+  selector:
+    app: traffic-proxy
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traffic-proxy
+  namespace: traffic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traffic-proxy
+  template:
+    metadata:
+      name: traffic-proxy
+      labels:
+        app: traffic-proxy
+    spec:
+      volumes:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: task-pv-claim
+      containers:
+      - name: traffic
+        image: jacksonbezerrapaiva/ats:latest
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: shared-data
+            mountPath: /var/trafficserver/
+        ports:
+        - containerPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: traffic-ingress
+  namespace: traffic
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: traffic-volume-poc.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: traffic-svc
+            port:
+              number: 80
