@@ -16,7 +16,7 @@ metadata:
   name: traffic-proxy
   namespace: traffic
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: traffic-proxy
