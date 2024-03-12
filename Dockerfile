@@ -15,17 +15,14 @@ RUN rm -rf /tmp/trafficserver
 ARG PORT=80
 ARG HOST=traffic-volume-poc.com
 
-#RUN echo "map ${HOST}:${PORT}/test https://google.com.br" >> /etc/trafficserver/remap.config
-#RUN echo "map ${HOST}:${PORT}/terra https://terra.com.br" >> /etc/trafficserver/remap.config
-#RUN echo "map ${HOST}:${PORT}/nginx http://traffic-nginx.com" >> /etc/trafficserver/remap.config
-
-RUN echo "CONFIG proxy.config.http.server_ports STRING ${PORT} ${PORT}:ipv6" >> /etc/trafficserver/records.config
-
 COPY records.config /etc/trafficserver/
 COPY remap.config /etc/trafficserver/
 COPY storage.config /etc/trafficserver/
 COPY volume.config /etc/trafficserver/
 COPY cache.config /etc/trafficserver/
+COPY plugin.config /etc/trafficserver/
+COPY healtchecks.config /etc/trafficserver/
+
 
 EXPOSE 80 8088
 

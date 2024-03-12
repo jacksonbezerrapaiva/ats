@@ -26,17 +26,17 @@ spec:
       labels:
         app: traffic-proxy
     spec:
-      volumes:
-        - name: shared-data
-          persistentVolumeClaim:
-            claimName: task-pv-claim
+      # volumes:
+      #   - name: shared-data
+      #     persistentVolumeClaim:
+      #       claimName: task-pv-claim
       containers:
       - name: traffic
         image: jacksonbezerrapaiva/ats:latest
         imagePullPolicy: Always
-        volumeMounts:
-          - name: shared-data
-            mountPath: /var/trafficserver/
+        # volumeMounts:
+        #   - name: shared-data
+        #     mountPath: /var/trafficserver/
         ports:
         - containerPort: 80
 ---
