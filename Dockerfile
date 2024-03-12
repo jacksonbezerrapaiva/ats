@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:buster-slim
 
 ARG TRAFFIC_SERVER_VERSION=9.0.2
 RUN apt-get update    
@@ -20,8 +20,6 @@ COPY remap.config /etc/trafficserver/
 COPY storage.config /etc/trafficserver/
 COPY volume.config /etc/trafficserver/
 COPY cache.config /etc/trafficserver/
-COPY plugin.config /etc/trafficserver/
-COPY healtchecks.config /etc/trafficserver/
 
 
 EXPOSE 80 8088
